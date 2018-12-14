@@ -1,0 +1,9 @@
+org\alibaba\dao\pojo\UsersExample$Criterion.class
+org\alibaba\dao\mapper\UserXml.class
+org\alibaba\dao\pojo\Users.class
+org\alibaba\dao\pojo\UsersExample$GeneratedCriteria.class
+org\alibaba\dao\mapper\User.class
+org\alibaba\dao\mapper\UsersMapper.class
+org\alibaba\dao\pojo\UsersExample$Criteria.class
+org\alibaba\dao\pojo\UsersExample.class
+org\alibaba\dao\App.class

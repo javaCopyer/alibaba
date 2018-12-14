@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+     
+     <!-- use-default-filters属性默认为true，即默认注入所在包及其子包下带有@controller,@service...等注解的bean
+     	修改为false则取消默认注入，
+     	总结为：为true时context:exclude-filter表示指定不注入
+     		      为false时context:include-filter表示指定注入 -->   
+	<context:component-scan base-package="org.alibaba" use-default-filters="false">
+	   	 <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+	   	 <context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.RestControllerAdvice"/>
+	</context:component-scan>
+	
+	  <!-- 存储区域设置信息
+         SessionLocaleResolver类通过一个预定义会话名将区域化信息存储在会话中。
+     -->
+    <bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver" />
+    
+    <!-- 国际化资源文件 -->
+    <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+        <property name="basename" value="classpath:messages" />
+        <!-- 如果在国际化资源文件中找不到对应代码的信息，就用这个代码作为名称  -->               
+        <property name="useCodeAsDefaultMessage" value="true" />  
+    </bean>
+	
+	
+	
+	<!-- FormattingConversionServiceFactroyBean 请求数据类型转换内部已经自动注册了
+	  会自动注册RequestMappingHandlerMapping、RequestMappingHandlerAdapter 与ExceptionHandlerExceptionResolver 三个bean。还将提供以下支持：
+	 支持使用 ConversionService 实例对表单参数进行类型转换。
+	支持使用 @NumberFormat annotation、@DateTimeFormat注解完成数据类型的格式化。
+	支持使用 @Valid 注解对 JavaBean 实例进行 JSR 303 验证。
+	支持使用 @RequestBody 和 @ResponseBody 注解。
+	 -->
+	<mvc:annotation-driven conversion-service="conversionService">
+		<mvc:message-converters register-defaults="true">
+            <bean class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
+                <property name="supportedMediaTypes">
+                    <list>
+                        <value>text/html;charset=UTF-8</value>
+                        <value>application/json</value>
+                    </list>
+                </property>
+                <property name="features">
+                    <list>
+                        <value>WriteMapNullValue</value>
+                        <value>QuoteFieldNames</value>
+                        <value>WriteDateUseDateFormat</value>
+                        <!-- 禁用fastjson循环引用检测 -->
+                        <value>DisableCircularReferenceDetect</value>
+                    </list>
+                </property>
+            </bean>
+        </mvc:message-converters>
+	</mvc:annotation-driven>
+	
+	<!-- 静态资源 -->
+	<mvc:default-servlet-handler/>
+	
+	<bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+		<property name="converters">
+           	<list>
+           		<bean class="org.alibaba.Converters.StringToDateConverter"/>
+           	</list>
+       </property>
+	</bean>
+
+	<bean class="org.springframework.web.servlet.view.BeanNameViewResolver" p:order="10"/>
+	
+    <!-- 配置视图解析器 -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/views/"></property>
+        <property name="suffix" value=".jsp"></property>
+    </bean>
+    <!-- 处理xml的view（xtream） -->
+	<bean id="xmlview" class="org.springframework.web.servlet.view.xml.MarshallingView" >
+		<property name="marshaller">
+			<bean class="org.springframework.oxm.xstream.XStreamMarshaller"/>
+		</property>
+	</bean>
+    
+    <!-- 拦截器配置 -->
+	<mvc:interceptors>
+	   <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor" />
+		<mvc:interceptor>
+				<mvc:mapping path="/**" />
+				<bean class="org.alibaba.interceptor.MainInterceptor" />
+		</mvc:interceptor>
+	</mvc:interceptors>
+    
+
+</beans>
