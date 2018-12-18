@@ -4,10 +4,14 @@
     xmlns:mvc="http://www.springframework.org/schema/mvc"
     xmlns:p="http://www.springframework.org/schema/p"
     xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
     xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
-     
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+  
+    <!-- 使用aop， 启动cglib代理controller -->
+    <aop:aspectj-autoproxy proxy-target-class="true"/> 
      <!-- use-default-filters属性默认为true，即默认注入所在包及其子包下带有@controller,@service...等注解的bean
      	修改为false则取消默认注入，
      	总结为：为true时context:exclude-filter表示指定不注入

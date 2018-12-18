@@ -20,9 +20,6 @@ public class InitBean implements InitializingBean, DisposableBean{
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-//		System.out.println("项目路径：" + System.getProperty("webPath"));
-//		commonService.test();
-		commonService.annotationAspectTest("传递参数");
 		logger.info("项目路径：" + System.getProperty("webPath"));
 	}
 

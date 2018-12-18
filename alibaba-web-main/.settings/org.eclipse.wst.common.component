@@ -12,6 +12,6 @@
         </dependent-module>
         <property name="java-output-path" value="/alibaba-web-main/target/classes"/>
         <property name="component.exclusion.patterns" value="WEB-INF/web.xml"/>
-        <property name="context-root" value="/"/>
+        <property name="context-root" value="ROOT"/>
     </wb-module>
 </project-modules>

@@ -1,12 +1,15 @@
 package org.alibaba.controller;
 
 import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.alibaba.common.annotation.LogAdd;
 import org.alibaba.common.redis.RedisSubscribeThread;
 import org.alibaba.common.redis.RedisUtil;
 import org.alibaba.common.util.MessageI18nUtil;
@@ -16,9 +19,12 @@ import org.alibaba.dao.mapper.User;
 import org.alibaba.dao.mapper.UserXml;
 import org.alibaba.dao.mapper.UsersMapper;
 import org.alibaba.dao.pojo.Users;
+import org.alibaba.service.CommonService;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,7 +32,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 @RestController
+@RequestMapping("/test")
 public class TestController {
+	@Resource
+	private CommonService commonService;
 	@Autowired
 	private UsersMapper usersMapper;
 	public TestController() {
@@ -34,16 +43,19 @@ public class TestController {
 	}
 	
 	//consumes 表示请求的contenttype为指定的类型 否则报状态码为415
-	 @RequestMapping(value = "/testHello", consumes = {  
+	//Content type 'null' not supported
+	 @RequestMapping(value = "/consumes123", consumes = {  
 		        "application/JSON",  
 		        "application/XML"  
 		    })  
     public String testHello(Model model, @RequestParam(required = false) String name) {
+		 System.out.println("consumes123");
 		 model.addAttribute("testName", "zc");
         return "test";
     }
 	 
-	 @RequestMapping("/test")
+	@RequestMapping("/test")
+	@LogAdd(opt=LogAdd.OPT_TYPE_DEL, title="test")
     public String testHello(Model model) throws Exception {
 		 model.addAttribute("testName", "zc");
 		 return "test";
@@ -52,12 +64,9 @@ public class TestController {
 	 
  	@RequestMapping(name="getjson")
 	public User getJson(User user, HttpServletRequest request) throws Exception {
+ 		System.out.println("getjson");
  		user.setName(MessageI18nUtil.getMessage(request, "password"));
  		return  user;
- 	}
- 	@RequestMapping("getxml")
- 	public UserXml getXml(UserXml userXml) {
- 		return userXml;
  	}
  	@RequestMapping("getview")
  	public ModelAndView getView(User user) {
@@ -117,14 +126,25 @@ public class TestController {
  		return resBean;
  	}
  	
-
-// 	@ModelAttribute(name="modelAttribute")
-//	public String getModelAttribute() {
-//		String str = "modelAttribute";
-//		return str;
-//	}
+ 	/**
+ 	 * @ModelAttribute注解会在同一个controller下的其他@RequestMapping之前执行
+ 	 * 放入到模型（Model）之中, view之中可以使用${modelAttribute}获取到其中的值
+ 	 * 或者在其他的@RequestMapping方法参数中使用@ModelAttribute(name="modelAttribute")
+ 	 * 他会将参数的值填充
+ 	 * @return
+ 	 */
+ 	@ModelAttribute(name="modelAttribute")
+	public String getModelAttribute() {
+		String str = "modelAttribute";
+		return str;
+	}
+ 	@RequestMapping("modelAttribute")
+ 	public UserXml getXml(UserXml userXml, @ModelAttribute(name="modelAttribute") String name) {
+ 		userXml.setName(name);
+ 		return userXml;
+ 	}
 	
-	
+ 	
 	void login() throws Exception {
 		throw new SysException("登录异常", "10111");
 	}

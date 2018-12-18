@@ -6,10 +6,10 @@
     xmlns:aop="http://www.springframework.org/schema/aop"  
     xsi:schemaLocation="http://www.springframework.org/schema/beans 
                         http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
-                        http://www.springframework.org/schema/aop 
-                         http://www.springframework.org/schema/aop/spring-aop.xsd">
-    <aop:aspectj-autoproxy/>
-     <aop:config>
+                        http://www.springframework.org/schema/aop
+						http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+<!--  <aop:aspectj-autoproxy proxy-target-class="true"/>  -->
+    <!--  <aop:config>
        <aop:aspect id="TestAspect" ref="myInterceptor">  
             <aop:pointcut id="servicem" expression="execution(* org.alibaba.service.impl.*.*(..))" />   
             <aop:before pointcut-ref="servicem" method="doAccessCheck"/>  
@@ -17,5 +17,5 @@
             <aop:after-throwing  pointcut-ref="servicem" method="doAfterThrow" throwing="ex"/>     
         </aop:aspect>  
     </aop:config>        
-   <bean id="myInterceptor" class="org.alibaba.common.aop.AopAspcet"/>  
+   <bean id="myInterceptor" class="org.alibaba.common.aop.AopAspcet"/>   -->
 </beans>  
