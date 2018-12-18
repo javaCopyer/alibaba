@@ -49,7 +49,6 @@ public class TestController {
 		        "application/XML"  
 		    })  
     public String testHello(Model model, @RequestParam(required = false) String name) {
-		 System.out.println("consumes123");
 		 model.addAttribute("testName", "zc");
         return "test";
     }
@@ -64,7 +63,6 @@ public class TestController {
 	 
  	@RequestMapping(name="getjson")
 	public User getJson(User user, HttpServletRequest request) throws Exception {
- 		System.out.println("getjson");
  		user.setName(MessageI18nUtil.getMessage(request, "password"));
  		return  user;
  	}
