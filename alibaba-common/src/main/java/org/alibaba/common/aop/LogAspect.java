@@ -12,12 +12,15 @@ import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.druid.util.StringUtils;
 @Component
 @Aspect
 public class LogAspect{
+	private Logger logger = LoggerFactory.getLogger(LogAspect.class);
 	 @Pointcut("@annotation(org.alibaba.common.annotation.LogAdd)")  
      public  void log() {}  
 	 
