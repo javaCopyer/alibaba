@@ -49,10 +49,10 @@
  	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 	    <property name="dataSource" ref="dataSource" />
 	    <property name="configLocation" value="classpath:mybatis.xml" />
-	    <!-- 添加自定义插件
+	    <!-- 添加自定义插件-->
 	     <property name="plugins">
             <array>
-                <bean class="com.xzpx_zc.plugins.mybatisPlugin1"></bean>
+               <!--  <bean class="com.xzpx_zc.plugins.mybatisPlugin1"></bean> -->
                 <bean class="com.github.pagehelper.PageHelper">
        				 <property name="properties">
         				  <value>dialect=mysql</value>
@@ -60,7 +60,7 @@
       			</bean>
             </array>
         </property>
-         -->
+         
 	</bean>  
 	
 	
@@ -70,7 +70,8 @@
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
  		<property name="basePackage" value="org.alibaba.dao.mapper" />
  		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>  
-	</bean>                     
+	</bean>   
+	
 	<!-- 使用tx标签的声明式事务的配置 -->
 	<!-- 
 		spring的事务分为两种， 编程式事务和声明式事务
@@ -82,8 +83,7 @@
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
-	
-	<!-- 通知 -->
+	<!-- 通知
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">
 		<tx:attributes>
 			<tx:method name="update*" propagation="REQUIRED"/>
@@ -95,8 +95,13 @@
 			<tx:method name="*" rollback-for="Exception"/>
 		</tx:attributes>		
 	</tx:advice>
-	<!-- aop配置 -->
+	 -->
+	<!-- aop配置
 	<aop:config>
 		<aop:advisor advice-ref="txAdvice" pointcut="execution(* org.alibaba.service.impl.*.*(..))"/>
 	</aop:config>
+	 -->
+	<!-- 注解式声明式事务-->
+	<tx:annotation-driven transaction-manager="transactionManager"/>   
+	 
 </beans>

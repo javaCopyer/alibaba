@@ -1,14 +1,10 @@
 package org.alibaba.controller;
 
-import java.util.ArrayList;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.alibaba.common.PageResult;
+import org.alibaba.common.QueryForPage;
 import org.alibaba.common.annotation.LogAdd;
 import org.alibaba.common.redis.RedisSubscribeThread;
 import org.alibaba.common.redis.RedisUtil;
@@ -20,9 +16,9 @@ import org.alibaba.dao.mapper.UserXml;
 import org.alibaba.dao.mapper.UsersMapper;
 import org.alibaba.dao.pojo.Users;
 import org.alibaba.service.CommonService;
+import org.alibaba.service.UsersService;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,6 +34,8 @@ public class TestController {
 	private CommonService commonService;
 	@Autowired
 	private UsersMapper usersMapper;
+	@Resource
+	private UsersService userService;
 	public TestController() {
 		System.out.println("TestController is loading...");
 	}
@@ -99,7 +97,10 @@ public class TestController {
  	@RequestMapping(value="testService", method=RequestMethod.GET)
  	public ResBean testService(Users users) throws Exception {
  		ResBean resBean = new ResBean();
-// 		Users users1 = new Users();
+ 		QueryForPage qp = new QueryForPage(1, 5, "id asc", null);
+ 		PageResult pageResult = userService.queryByPage(qp);
+ 		resBean.setDatas(pageResult);
+ // 		Users users1 = new Users();
 // 		users1.setUsername("user1");
 // 		users1.setPassword("user1");
 // 		Users users2 = new Users();
@@ -109,14 +110,14 @@ public class TestController {
 // 		list.add(users1);
 // 		list.add(users2);
 // 		usersMapper.batchInsert(list);
- 		List<String> list = new ArrayList<String>();
- 		list.add("zxq");
- 		list.add("user1");
- 		list.add("user2");
- 		Map<String, Object> updateMap = new HashMap<String, Object>();
- 		updateMap.put("password", "12345678");
- 		updateMap.put("names", list);
- 		usersMapper.batchUpdate(updateMap);
+// 		List<String> list = new ArrayList<String>();
+// 		list.add("zxq");
+// 		list.add("user1");
+// 		list.add("user2");
+// 		Map<String, Object> updateMap = new HashMap<String, Object>();
+// 		updateMap.put("password", "12345678");
+// 		updateMap.put("names", list);
+// 		usersMapper.batchUpdate(updateMap);
 // 		UsersExample usersExample = new UsersExample();
 // 		usersExample.createCriteria().andUsernameEqualTo(Username);
 // 		List<Users> users = usersMapper.selectByExample(usersExample);
