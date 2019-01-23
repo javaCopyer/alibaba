@@ -32,7 +32,6 @@ public class RedisSubscribeThread extends Thread {
 		@Override
 		public void onMessage(String channel, String message) { //收到消息调用
 			st.addQueue(message);
-			System.out.println("消息接收成功，业务线程处理");
 //			new Thread() {
 //				@Override
 //				public void run() {
