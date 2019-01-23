@@ -1,4 +1,5 @@
 2018/12/18 15:00:28 
+zc
 ## spring aop，spring和springmvc父子容器##
 ###问题：spring aop注解配置代理controller无效  ###
 原因：spring和springmvc父子容器的问题，造成在spring容器中配置的AOP无法找到在springmvc容器中配置的controller，从而AOP配置无法使用。
