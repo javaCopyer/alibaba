@@ -1,4 +1,4 @@
-## spring事务 1233##
+## spring事务##
 ####Transaction rolled back because it has been marked as rollback-only 异常处理 ####
 在spring事务中， 事务嵌套的话会出现这个异常，例如
 
@@ -25,3 +25,4 @@
 最后addUser无异常抛出，准备提交事务，但是事务已经是回滚状态，所有会报次异常。
 
 解决方案：在一个事务中，异常要抛到方法的顶层
+
